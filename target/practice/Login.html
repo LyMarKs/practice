@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="css/Login.css">
+    <link rel="stylesheet" href="layui/css/layui.css">
+</head>
+<body>
+    <form action="admin/login" id="loginForm" method="get">
+        <p>
+            <label for="username">用户名：</label>
+            <input type="text" id="username" name="username" autocomplete="off" required>
+        </p>
+        <p>
+            <label for="password">密 &nbsp;&nbsp;码：</label>
+            <input type="password" id="password" name="password" autocomplete="off" required>
+        </p>
+        <p>
+            <input type="submit" value="登 录">
+            <input type="button" value="去注册" onclick="toRegister()">
+            <a href="" id="forget-pwd" >忘记密码</a>
+        </p>
+    </form>
+</body>
+<script src="layui/layui.js"></script>
+<script>
+    function toRegister() {
+        location.href = 'Register.html';
+    }
+</script>
+</html>

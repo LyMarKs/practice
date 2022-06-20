@@ -1,9 +1,10 @@
 package com.util;
 
-import com.entity.PageInfo;
 import lombok.SneakyThrows;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.ArrayList;
@@ -25,8 +26,9 @@ public class DBUtils {
 
     static {
         try {
+            InputStream rs = DBUtils.class.getResourceAsStream("dbInfo.properties");
             Properties prop = new Properties();
-            prop.load(new FileInputStream("F:\\MyProjext\\JAVA\\maven_workspace\\threeTier\\src\\main\\java\\com\\util\\dbInfo.properties"));
+            prop.load(rs);
             Class.forName(prop.getProperty("driver"));
             url = prop.getProperty("url");
             username = prop.getProperty("username");
@@ -38,7 +40,6 @@ public class DBUtils {
 
     /**
      * 方法描述：获取连接
-     * @return 连接对象
      */
     public static void getConn() throws SQLException {
         conn =  DriverManager.getConnection(url, username, password);
@@ -73,6 +74,23 @@ public class DBUtils {
         } catch (Exception e) {
             System.err.println("关闭数据库出错!错误信息" + e.getMessage());
         }
+    }
+
+    public static int update(String sql, Object... args) {
+        int rows = -1;
+        try {
+            //初始化语句对象
+            getPS(sql);
+            //设置参数
+            setPreparedParams(args);
+            //执行增/删/改操作
+            rows = ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            closeAll();
+        }
+        return rows;
     }
 
     /**
@@ -164,20 +182,6 @@ public class DBUtils {
         return data;
     }
 
-    public static <E> PageInfo<E> pageList(String sql, Class<E> c, Object... args) {
-        sql = sql.toUpperCase();
-        //获取总记录数
-        int sumRecord = getSumRecord(sql, args);
-        //获取页面数据
-        int pageNumber = (int) args[args.length - 2];
-        int pageRecord = (int) args[args.length - 1];
-        if (pageNumber > 0) {
-            pageNumber--;
-        }
-        args[args.length - 2] = pageNumber * pageRecord;
-        return new PageInfo<>(selectMore(sql, c, args), sumRecord, pageRecord, pageNumber + 1);
-    }
-
     public static int getSumRecord(String sql, Object... args) {
         //1.先获取总记录数
         // 拼接SQL
@@ -188,11 +192,6 @@ public class DBUtils {
         // 获取总记录数
         return selectOne(countSql.toString(), int.class, Arrays.copyOf(args, args.length - 2));
     }
-
-    /*public static void main(String[] args) {
-        getPS("select * from t_book");
-        System.out.println(Arrays.toString(getDbNames(null)));
-    }*/
 
     /**
      * 获取数据库的所有格式化列名
