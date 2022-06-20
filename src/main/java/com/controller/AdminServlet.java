@@ -1,13 +1,12 @@
 package com.controller;
 
-import com.Model.Admin;
-import com.util.DBUtils;
+import com.dao.AdminDAO;
+import com.model.Admin;
+import com.service.AdminService;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.sql.Connection;
-import java.sql.SQLException;
 
 @WebServlet("/admin/*")
 public class AdminServlet extends BaseServlet {
@@ -15,17 +14,16 @@ public class AdminServlet extends BaseServlet {
     /**
      * 登录
      */
-    public void login(HttpServletRequest req, HttpServletResponse resp) {
-        //获取参数
-        String username = req.getParameter("username");
-        String password = req.getParameter("password");
-        try {
-            DBUtils.getConn();
-            Admin admin = DBUtils.selectOne("SELECT * FROM admin WHERE nsername=?", Admin.class, username, password);
-            System.out.println(admin.toString());
-            DBUtils.closeAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public boolean login(HttpServletRequest req, HttpServletResponse resp) {
+        Admin admin = new Admin();
+        // 获取参数
+        admin.setUsername(req.getParameter("username"));
+        admin.setPassword(req.getParameter("password"));
+        // 实例化数据访问层对象
+        AdminDAO adminDAO = new AdminDAO(admin);
+        // 实例化业务逻辑层对象
+        AdminService adminService = new AdminService(adminDAO);
+        // 管理员登录
+        return adminService.login();
     }
 }

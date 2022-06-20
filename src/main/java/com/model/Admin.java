@@ -1,9 +1,9 @@
-package com.Model;
+package com.model;
 
 public class Admin {
     private int aid;
     private String name;
-    private String nsername;
+    private String username;
     private String password;
     private String phone;
 
@@ -21,11 +21,11 @@ public class Admin {
         this.name = name;
     }
 
-    public String getNsername() {
-        return nsername;
+    public String getUsername() {
+        return username;
     }
-    public void setNsername(String nsername) {
-        this.nsername = nsername;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
