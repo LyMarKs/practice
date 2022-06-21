@@ -2,31 +2,99 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title></title>
-    <link rel="stylesheet" href="css/Login.css">
-    <link rel="stylesheet" href="layui/css/layui.css">
+    <title>用户登录</title>
+    <link rel="stylesheet" href="css/Login&Register.css">
+    <style>
+        #loginForm p label {
+            width: 70px;
+        }
+    </style>
 </head>
-<body>
-    <form action="admin/login" id="loginForm" method="post">
-        <p>
-            <label for="username">用户名：</label>
-            <input type="text" id="username" name="username" autocomplete="off" required>
-        </p>
-        <p>
-            <label for="password">密 &nbsp;&nbsp;码：</label>
-            <input type="password" id="password" name="password" autocomplete="off" required>
-        </p>
-        <p>
-            <input type="submit" value="登 录">
-            <input type="button" value="去注册" onclick="toRegister()">
-            <a href="" id="forget-pwd" >忘记密码</a>
-        </p>
-    </form>
+<body style="font-family: '苹方-简', serif;">
+    <div class="box" >
+        <h1>管 理 员 登 录</h1>
+        <form action="javascript:void(0);" id="loginForm" method="post" autocomplete="off">
+            <p>
+                <label for="username">用户名：</label>
+                <input type="text" name="username" id="username" />
+            </p>
+            <p>
+                <label for="password">密码：</label>
+                <input type="password" name="password" id="password" />
+            </p>
+            <div class="btn">
+                <input type="submit" value="登 录" name="login" id="login">
+                <input type="button" value="去注册" id="toRegister">
+                <a href="javascript:void(0);" id="forgetPwd">忘记密码</a>
+            </div>
+        </form>
+    </div>
 </body>
+<script src="js/jquery-3.6.0.js"></script>
 <script src="layui/layui.js"></script>
+<script src="js/Login&Register.js"></script>
 <script>
-    function toRegister() {
-        location.href = 'Register.html';
+    /*检测本地是否存储了用户信息*/
+    $(function () {
+        //获取本地数据
+        let adminInfo = JSON.parse(localStorage.getItem('adminData'));
+        //判断是否存储了用户数据
+        if (adminInfo !== null) {
+            //请求服务器，判断用户是否存在
+            $.post({
+                url: 'admin/login',
+                data: {
+                    username: adminInfo.username,
+                    password: adminInfo.password
+                },
+                success: function (isExist) {
+                    console.log(isExist)
+                    if(isExist.trim() === 'true') {
+                        //跳转到后台
+                        location.href = 'BSIndex.html';
+                    }
+                }
+            });
+        }
+    });
+
+    /*检查用户名是否存在*/
+    function exam(username, password, isExist) {
+        // 判断用户是否存在
+        if(isExist.trim() === 'true') {   // 登录成功
+            layer.alert('登陆成功!', {
+                icon: 1,
+                title: '登录结果'
+            });
+            /*//设置管理员数据
+            localStorage.setItem('adminData', JSON.stringify({
+                username: username,
+                password: password
+            }))
+            //跳转至管理界面
+            $("#loginForm").attr("action","BSIndex.html").submit()*/
+        } else {    // 登陆失败
+            layer.alert('用户名和密码错误!', {
+                icon: 2,
+                title: '登录结果'
+            });
+        }
     }
+
+    /*去注册按钮的点击事件*/
+    $('#toRegister').on('click', function () {
+        // 跳转至注册页面
+        location.href = 'Register.html';
+    });
+
+    /*忘记密码的点击事件*/
+    $('#forgetPwd').on('click', function () {
+        layer.open({
+            type: 1,
+
+        });
+    });
 </script>
 </html>
+
+

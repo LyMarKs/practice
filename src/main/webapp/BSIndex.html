@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后台</title>
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <link rel="stylesheet" href="css/BS.css">
+    <script src="layui/layui.js"></script>
+    <script src="js/jquery-3.6.0.js"></script>
+    <script src="js/BSIndex.js"></script>
+</head>
+<body>
+    <!-- 顶部标题 -->
+    <div class="layui-header" id="topic">
+        <div class="layui-fluid">
+            <a href="" class="title">后台管理</a>
+            <div class="layui-nav" id="account" lay-bar="disabled">
+                <div class="layui-nav-item" lay-unselect="">
+                    <a href="javascript:;">
+                        <img class="layui-nav-img" src="images/200x200.jpg" alt="头像">
+                        <span id="adminName">simple</span>
+                    </a>
+                </div>
+                <div class="layui-nav-item">
+                    <a href="Login.html" onclick="cutAccount()">注销</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 左侧菜单 -->
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!--左侧导航栏-->
+            <ul class="layui-nav layui-nav-tree site-demo-nav">
+                <!--1.员工管理-->
+                <li class="layui-nav-item layui-nav-itemed" id="staff">
+                    <dl class="layui-nav-child">
+                        <dd id="seeStaff">
+                            <!-- <a href="javascript:cutMenu(1);">查看新闻</a> -->
+                            <a href="BSPage/seeNews.html" >员工管理</a>
+                        </dd>
+                        <dd id="addStaff">
+                            <a href="BSPage/addNews.html" >部门管理</a>
+                        </dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

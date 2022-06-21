@@ -3,7 +3,6 @@ package com.controller;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.util.Optional;
@@ -16,8 +15,8 @@ public class BaseServlet extends HttpServlet {
         // 判断参数是否为空
         if (methodName.trim().isEmpty()) {
             try {
-                resp.sendRedirect("404.html");
-            } catch (IOException e) {
+                req.getRequestDispatcher("404.html").forward(req, resp);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return;

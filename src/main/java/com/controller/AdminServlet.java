@@ -26,4 +26,22 @@ public class AdminServlet extends BaseServlet {
         // 管理员登录
         return adminService.login();
     }
+
+    /**
+     * 登录
+     */
+    public boolean register(HttpServletRequest req, HttpServletResponse resp) {
+        Admin admin = new Admin();
+        // 获取参数
+        admin.setName(req.getParameter("name"));
+        admin.setUsername(req.getParameter("username"));
+        admin.setPassword(req.getParameter("password"));
+        admin.setPhone(req.getParameter("phone"));
+        // 实例化数据访问层对象
+        AdminDAO adminDAO = new AdminDAO(admin);
+        // 实例化业务逻辑层对象
+        AdminService adminService = new AdminService(adminDAO);
+        // 管理员登录
+        return adminService.register();
+    }
 }
